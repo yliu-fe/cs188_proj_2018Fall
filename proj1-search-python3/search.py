@@ -90,8 +90,6 @@ def depthFirstSearch(problem):
     """
     "*** YOUR CODE HERE ***"
     start = problem.getStartState()
-    print(start)
-    print(problem.getSuccessors(start))
     stack = util.Stack()
     stack.push((start, []))
     visited = set()
@@ -150,7 +148,20 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    start = problem.getStartState()
+    queue = util.PriorityQueue()
+    queue.push((start, []), 0)
+    visited = set()
+    while not queue.isEmpty():
+        node, path = queue.pop()
+        if problem.isGoalState(node):
+            return path
+        if node not in visited:
+            visited.add(node)
+            for successor in problem.getSuccessors(node):
+                queue.push((successor[0], path + [successor[1]]),
+                           problem.getCostOfActions(path + [successor[1]]) + heuristic(successor[0], problem))
+
 
 
 # Abbreviations

@@ -36,6 +36,28 @@ print不好使，还得是debug。
 - Working directory：设置为项目的根目录，例如我的是`~/cs188_proj_2018Fall/proj2-multiagent-python3`，否则会出现pacman识别不了地图文件的情况。
 这种情况下会报出`Exception: The layout xxxxxx cannot be found`的错误，参见`pacman.py`Line 570。
 
+在VS code中，将debug设置文件`launch.json`改为：
+
+```json
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Python: Pacman Data Structure",
+            "type": "python",
+            "request": "launch",
+            "program": "pacman.py",
+            "console": "integratedTerminal",
+            "args": ["-p","ReflexAgent", "-l","testClassic", "-t",],
+            "justMyCode": true
+        }
+    ]
+```
+此时需要手动设置vscode打开的文件夹为`proj2-multiagent-python3`。
 ——————
 
 如果进入了debug模式且没有报任何的Extension，就可以步进（Step Over）来查看各个变量的数据结构了。在Pycharm的Debug底边栏中的“Threads & Variables”标签。

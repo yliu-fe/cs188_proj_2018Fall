@@ -72,6 +72,7 @@ class ReflexAgent(Agent):
         newFood = successorGameState.getFood()
         newGhostStates = successorGameState.getGhostStates()
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
+        print(str(newGhostStates))
 
         "*** YOUR CODE HERE ***"
         
@@ -154,7 +155,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns whether or not the game state is a losing state
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        legal_actions = gameState.getLegalActions(0)
+        
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """

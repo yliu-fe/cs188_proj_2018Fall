@@ -122,3 +122,6 @@ alpha-beta剪枝法，在minimax的基础上降低计算复杂度。
 这里唯一要注意的是，在`min_value`和`max_value`函数中，比较并更新alpha、beta时不要带等号，一定是`value > beta`或`value < alpha`。Note的流程图在这里出现了问题。
 
 ## Question 4: Expectimax
+
+不再如minimax般假定ghost完全理性并作出最优结果，而是假定其按照均匀分布随机选取动作。
+

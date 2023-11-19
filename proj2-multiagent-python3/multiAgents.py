@@ -204,8 +204,57 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         Returns the minimax action using self.depth and self.evaluationFunction
         """
         "*** YOUR CODE HERE ***"
-        pass
+        legal_action = gameState.getLegalActions(0)
+        alpha = -1e9
+        beta = 1e9
+        best_action = None
+        best_score = -1e9
+        for action in legal_action:
+            successorState = gameState.generateSuccessor(0, action)
+            successorValue = self.value(successorState, alpha,beta,depth = 0, agentIndex= 1)
+            if successorValue > best_score:
+                best_score = successorValue
+                best_action = action
+                alpha = successorValue
+        return best_action
 
+    
+    def value(self, gameState, alpha, beta, depth = 0, agentIndex = 0):
+        if gameState.isWin() or gameState.isLose() or depth == self.depth:
+            return self.evaluationFunction(gameState)
+        
+        if agentIndex == 0:
+            return self.max_value(gameState, depth, agentIndex, alpha, beta)
+        else:
+            return self.min_value(gameState, depth, agentIndex, alpha, beta)
+
+
+    def max_value(self, gameState, depth, agentIndex, alpha, beta):
+        legal_action = gameState.getLegalActions(agentIndex)
+        value = -1e9
+        for action in legal_action:
+            successorState = gameState.generateSuccessor(agentIndex, action)
+            successorValue = self.value(successorState, alpha, beta, depth, agentIndex+1)
+            value = max(successorValue,value)
+            if value > beta:
+                return value
+            alpha = max(value, alpha)
+        return value
+
+    def min_value(self, gameState, depth, agentIndex, alpha, beta):
+        legal_action = gameState.getLegalActions(agentIndex)
+        value = 1e9
+        for action in legal_action:
+            successorState = gameState.generateSuccessor(agentIndex, action)
+            if agentIndex == gameState.getNumAgents() - 1:
+                successorValue = self.value(successorState,alpha,beta,depth+1,0)
+            else:
+                successorValue = self.value(successorState,alpha,beta,depth, agentIndex+1)
+            value = min(value,successorValue)
+            if value < alpha:
+                return value
+            beta = min(beta, value)
+        return value
 class ExpectimaxAgent(MultiAgentSearchAgent):
     """
       Your expectimax agent (question 4)

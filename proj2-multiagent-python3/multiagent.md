@@ -112,3 +112,13 @@ def value(self, gameState, depth=0, agentIndex=0):
 ### ghost行动：最小化评分`min_value()`
 
 类似的，这里要用到`gameState.getNumAgents()`方法，确认现在还有多少agent没有做出决策。如果所有agent都做出了决策，那么就要进入下一层搜索，即`depth + 1`。
+
+## Question 3: Alpha-Beta Pruning
+
+alpha-beta剪枝法，在minimax的基础上降低计算复杂度。
+
+可以参照note 3的示例，如果左侧分支的min value = 3, 而中间分支的子节点中出现了一个2，那显然中间节点min value <= 2，因此max agent不需要考虑中间分支的任何情形了，因此，我们可以剪掉这个分支而不用担心出现精度问题。
+
+这里唯一要注意的是，在`min_value`和`max_value`函数中，比较并更新alpha、beta时不要带等号，一定是`value > beta`或`value < alpha`。Note的流程图在这里出现了问题。
+
+## Question 4: Expectimax

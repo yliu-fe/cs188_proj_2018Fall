@@ -125,3 +125,8 @@ alpha-beta剪枝法，在minimax的基础上降低计算复杂度。
 
 不再如minimax般假定ghost完全理性并作出最优结果，而是假定其按照均匀分布随机选取动作。
 
+由于这里假定了采用uniform distribution，因此无需单独定义概率，而是直接将`exp_value`函数中的分数除以`legal_action`的元素数。
+
+## Question 5: Evaluation Function
+
+略微修改了Question 1中的evaluation function，还是一个Manhattan Distance问题，在最后改一下分子或分母上的系数，就可以达到全胜、平均1000分、运行不超过30秒等评分点，从而拿到这一问的满分。

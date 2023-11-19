@@ -21,8 +21,8 @@ python pacman.py -p ReflexAgent -l testClassic
 
 在基本分数的基础上，减去最近幽灵距离的倒数，再减去最近食物距离的倍数。两个距离中的系数可以根据情况自行调试设置。
 
-
 ### 额外问题：关于如何展示`multiAgents.py`中各个类型中出现变量的数据结构
+
 print不好使，还得是debug。
 
 断点打在`multiagent.py`中想看的地方，如果使用pycharm，在debug的设置中输入如下内容：
@@ -57,6 +57,7 @@ print不好使，还得是debug。
         }
     ]
 ```
+
 此时需要手动设置vscode打开的文件夹为`proj2-multiagent-python3`。
 ——————
 
@@ -72,4 +73,42 @@ print不好使，还得是debug。
 - `newScaredTimes`是一个列表，表示每个幽灵因pacman吃了能量豆而变害怕的剩余时间。
 
 ## Question 2: Minimax Agent
+
 实现基于Minimax搜索方法的agent。
+
+参照note 3进行，注意我们并不清楚一共有几个agent，但我们能知道的是agent 0必然是pacman，而剩余的agent 1+ 都是幽灵。
+
+### 筛选动作`getAction()`
+
+底层的逻辑是不动的，遍历所有的合法action，对每个action所带来的新状态进行评分，并选取其中评分最高者作为本期的动作。
+
+唯一要注意的是，此处调用`value()`时要明确`agentIndex = 1`。因为这里评估各个action的评分相当于minimax中pacman agent已经做出了选择。
+
+### 状态评分`value()`
+
+这一部分是minimax的根节点。
+
+```python
+def value(self, gameState, depth=0, agentIndex=0):
+    if gameState.isWin() or gameState.isLose() or depth == self.depth:
+        return self.evaluationFunction(gameState)
+
+    if agentIndex == 0:
+        return self.max_value(gameState, depth)
+    else:
+        return self.min_value(gameState, depth, agentIndex)
+```
+
+这一部分会和`max_value`, `min_value`函数互相嵌套。引入的三个参数分别是`gameState`（当前状态）、`depth`（当前深度）、`agentIndex`（当前agent的编号）。
+
+首先，如果当前状态是终止状态（游戏赢了`isWin()`或输了`isLose()`），要么搜索已经到达了最大深度`self.depth`（一层“深度”代表pacman和所有ghost都打了一圈行为模拟，即完成了一圈`max_value`和`min_value`的过程）。
+
+如果没有终止，也没有达到最大深度，就继续进行，轮到谁（传入的`agentIndex`）就评估从谁那评估，如果是pacman就最大化，如果是ghost就最小化。我们始终站在pacman的角度讨论评分问题。
+
+### pacman行动：最大化评分`max_value()`
+
+对于pacman来说，他的任务是选出最好的action，和`getActions()`函数非常像，这里唯一的区别在于输出的是评分`v`，要么是当前的最优评分，要么是在当前节点下，执行这一动作所带来的次生状态的`value()`函数，从而向下搜索，但这里的`value`函数仍然是`depth`而非`depth + 1`，是因为要等待所有agent都执行完一遍后再向下层探索——届时pacman将作为agent 0，第一个作出动作。
+
+### ghost行动：最小化评分`min_value()`
+
+类似的，这里要用到`gameState.getNumAgents()`方法，确认现在还有多少agent没有做出决策。如果所有agent都做出了决策，那么就要进入下一层搜索，即`depth + 1`。

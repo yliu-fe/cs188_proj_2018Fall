@@ -154,8 +154,45 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns whether or not the game state is a losing state
         """
         "*** YOUR CODE HERE ***"
-        legal_actions = gameState.getLegalActions(0)
+        legal_action = gameState.getLegalActions(0)
+
+        best_action = None
+        best_score = -1e9
+        for action in legal_action:
+            successorState = gameState.generateSuccessor(0, action)
+            if self.value(successorState, agentIndex = 1) > best_score:
+                best_score = self.value(successorState, agentIndex= 1)
+                best_action = action
+
+        return best_action
+
+    def value(self, gameState, depth=0, agentIndex=0):
+        if gameState.isWin() or gameState.isLose() or depth == self.depth:
+            return self.evaluationFunction(gameState)
+
+        if agentIndex == 0:
+            return self.max_value(gameState, depth)
+        else:
+            return self.min_value(gameState, depth, agentIndex)
         
+    def max_value(self, gameState, depth):
+        legal_action = gameState.getLegalActions(0)
+        v = -1e9
+        for action in legal_action:
+            successorState = gameState.generateSuccessor(0, action)
+            v = max(v, self.value(successorState, depth, 1))
+        return v
+    
+    def min_value(self, gameState, depth, agentIndex):
+        legal_action = gameState.getLegalActions(agentIndex)
+        v = 1e9
+        for action in legal_action:
+            successorState = gameState.generateSuccessor(agentIndex, action)
+            if agentIndex == gameState.getNumAgents() - 1:
+                v = min(v, self.value(successorState, depth + 1, 0))
+            else:
+                v = min(v, self.value(successorState, depth, agentIndex + 1))
+        return v
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
@@ -167,7 +204,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         Returns the minimax action using self.depth and self.evaluationFunction
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        pass
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
     """

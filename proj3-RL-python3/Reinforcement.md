@@ -99,3 +99,45 @@ to get the same image as in the project description.
 
 ## Question 2
 
+Change the `question2` function in `analysis.py`. We are only permitted to change only one parameter.
+
+To avoid dropping into high-penalty states beside the "bridge", we should forbid the agent to "explore freely", therefore we can set `noise` as a very little value, even `0`.
+
+Changes of discount rate is helpless when we want to avoid agent from dropping into unexpected states. In Qvalue-based action choice, the agent will always choose the action with the highest Qvalue, those actions with high penalty(high negative reward) are extremely unlikely to be chosen, for a "rational agent".
+
+## Question 3
+
+Change all `question3` funcs in `analysis.py`. This is a possible parameter setting below.
+
+|Ques No.|Agent Preference|disc|noise|living|
+|--|--|--|--|--|
+|1|prefer the close exit (+1), risking the cliff (-10)|0.8|0.2|-3|
+|2|prefer the close exit (+1), but avoiding the cliff (-10)|0.2|0.2|-0.5|
+|3|prefer the distant exit (+10), risking the cliff (-10)|1|0|-1|
+|4|prefer the distant exit (+10), avoiding the cliff (-10)|0.7|0.2|2|
+|5|avoid both exits and the cliff (so an episode should never terminate)|0|1|0|
+
+### Risk or avoid cliff
+
+To train an agent to risk the cliff, we should set `noise` as a little value, thus the agent will learn little from the cliff and their V table has little information about the high penalty from the "cliff". Then, we can set `living` as a high penalty, so that the agent will prefer to risk the cliff than living in the high-penalty states.
+
+To train an agent to avoid the cliff, we give a higher `noise` and positive `living`, leading agent to safer states.
+
+
+### Close or distant exit
+
+To train an agent to prefer the further terminal with higher reward, we just increase the `discount` factor, to emphasize the future reward.
+
+### Avoid both exits and the cliff
+
+It's a weird query. We can set `discount` as 0, so that the agent will only care about the immediate reward.
+
+We set `noise` as 1, thus it's impossible for agent to choose the best action.
+
+> *Noise refers to how often an agent ends up in an unintended successor state when they perform an action.*
+>
+> *(Description in Problem 2)*
+
+`Living` can be set as any value, as the agent will never terminate because of no-best-choice setting.
+
+## Question 4

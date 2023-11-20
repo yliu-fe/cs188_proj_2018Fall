@@ -17,3 +17,9 @@ Course website(2018 Fall): <https://inst.eecs.berkeley.edu/~cs188/fa18/index.htm
 |5|Machine Learning|0/4||
 
 > Last Update at: Nov 20, 2023
+
+## Requirement
+
+Autograder used in this course requires only python 3.6.
+
+DO NOT use python >= 3.7 or <= 3.4.

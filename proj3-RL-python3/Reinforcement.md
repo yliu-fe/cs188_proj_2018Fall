@@ -6,6 +6,29 @@
 - `qlearningAgents.py` for Question 6, 7, 9, 10
 - `analysis.py` for question 2, 3, 8
 
+## Debugger setting for vscode
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Python: valueIterationAgent",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/autograder.py",
+            "args": ["-q","q5"], 
+            "cwd": "D:/Repositories/cs188_proj_2018Fall/proj3-RL-python3",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
+}
+```
+
+However, the debugger used in VScode requires python >= 3.7, and our autograder only supports python = 3.6. So it's better to debug with Jetbrains Pycharm.
+
 ## Question 1
 
 This question requires you to implement class "valueIterationAgent", by filling function `runValueIteration`, `computeQvalueFromValues` and `computeActionFromValues` in `valueIterationAgents.py`.
@@ -166,3 +189,17 @@ A simple change from value iteration process.
 > However, asynchronous iteration offers significant advantages in terms of computational costs and provides great flexibility in selecting the set of states to update in each round. As Sutton & Barto pointed out, some states have little relevance to optimal decision-making, allowing for a slower update frequency or even skipping those states altogether. On the other hand, some states have a significant impact on optimal decision-making and can be updated more frequently. A brief introduction can be found in Chapter 4.5, and Chapter 8 provides relevant content on the issue of state selection.
 
 ## Question 5
+
+This question asks us to implement `PrioritizedSweepingValueIterationAgent` in `valueIterationAgents.py`. Which is an inheritance of `AsynchronousValueIterationAgent` (a grandson of `ValueIterationAgent` :p).
+
+This value iteration method will focus on states which are likely to change the policy.
+
+> 这种“优先扫描价值迭代”可能与Sutton & Barto书中章节8.4的“优先遍历”一致。
+
+Be careful, the data structure `util.Counter` is a "better dictionary", but it limits its value as integar. So we build `predecessors` as dictionary.
+
+Projects document has shown us the algorithm we should to implement, so read code for details.
+
+> Be careful for idention.
+
+Now we complete the `valueIterationAgents.py` file.

@@ -8,12 +8,12 @@ Course website(2018 Fall): <https://inst.eecs.berkeley.edu/~cs188/fa18/index.htm
 
 ## Project Progress
 
-|No. Proj|Name|Progress|Note(Chinese)|
+|No. Proj|Name|Progress|Note(might in Chinese)|
 |--------|----|--------|----|
 |1|Search|Done|(No note)|
 |2|Multi-agent Search|Done|`multiagent.md`|
-|3|Reinforcement Learning|0/10||
+|3|Reinforcement Learning|4/10|`Reinforcement.md`|
 |4|Ghostbusters|0/10||
 |5|Machine Learning|0/4||
 
-> Last Update at: Nov.19, 2023
+> Last Update at: Nov 20, 2023

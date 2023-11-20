@@ -162,6 +162,18 @@ class AsynchronousValueIterationAgent(ValueIterationAgent):
 
     def runValueIteration(self):
         "*** YOUR CODE HERE ***"
+        legal_states = self.mdp.getStates()
+        num_states = len(legal_states)
+        for i in range(self.iterations):
+            current_state = legal_states[i % num_states]
+            if self.mdp.isTerminal(current_state):
+                continue
+            best_action = self.computeActionFromValues(current_state)
+            if best_action is not None:
+                self.values[current_state] = self.computeQValueFromValues(current_state, best_action)
+            else:
+                self.values[current_state] = 0.0
+
 
 class PrioritizedSweepingValueIterationAgent(AsynchronousValueIterationAgent):
     """

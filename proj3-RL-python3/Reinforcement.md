@@ -203,3 +203,98 @@ Projects document has shown us the algorithm we should to implement, so read cod
 > Be careful for idention.
 
 Now we complete the `valueIterationAgents.py` file.
+
+## Question 6 and 7
+
+Implement a Q-learning agent, by filling functions `computeActionFromQvalues`, `getQvalue`, `computeValueFromQvalues`, `update` and `getAction` in `qlearningAgents.py`.
+
+To execute autograder for question 6, we need to fill `update` function first. Therefore we solve question 6 and 7 together.
+
+### Define Q table
+
+Before filling any function, we should first define the instance of Q-value table, it's an instance of `util.Counter`, which is a "better dictionary".
+
+> However, its default data type is integar, so we need to transform its data as float in `getQvalue` func.
+
+```python
+def __init__(self, **args):
+    ReinforcementAgent.__init__(self, **args)
+
+    "*** YOUR CODE HERE ***"
+    self.value = util.Counter()
+```
+
+### Query about Q value
+
+The `getQValue` func is very simple:
+
+```python
+def getQValue(self, state, action):
+    """
+      Returns Q(state,action)
+      Should return 0.0 if we never seen a state
+      or the Q node value otherwise
+    """
+    "*** YOUR CODE HERE ***"
+    return float(self.values[(state, action)])
+```
+
+BTW: a dictionary can be indexed by a tuple, like `self.values[(state, action)]`.
+
+### Compute V value and best action from Q
+
+`computeValueFromQValues` and `computeActionFromQValues` are very similar.
+
+- Input: `state`
+
+- Step 1: find all possible actions in current state, using `self.getLegalActions(state)`.
+
+- Step 2a: for each action, compute its Q value by `self.getQValue(state, action)`, and find the maximum Q value as the V value of current state.
+
+- Step 2b: The exact best action is the action with the maximum Q value.
+
+- Output: `max_value` or `best_action`.
+
+### Epsilon-greedy action choice
+
+The `util.py` gives us a tiny function called "flipCoin", which returns `True` with probability `p`, and `False` with probability `1-p`. In this situation, probability `p` equals to the greedy parameter `self.epsilon`.
+
+If the coin is `True`, we randomly choose a legal action, with uniform probability distribution; if `False`, we choose the best action.
+
+### Update Q table
+
+Strictly follow this equation:
+
+$$
+\text{sample} = R(s,a,s') + \gamma \max_{a'}Q(s',a')
+$$
+
+$$
+Q(s,a) <- (1-\alpha)Q(s,a) + \alpha \text{sample}
+$$
+
+where $\alpha$ is the learning rate, $\gamma$ is the discount factor. $s,a,r,s'$ are the current state, action, reward and next state.
+
+## Question 8
+
+The answer is "NOT POSSIBLE".
+
+> *In the case of Q-learning, the agent will never learn the optimal policy for this MDP.*
+
+The optimal policy is that agent will alway run to right side. However, it's so hard for agent to touch the `+10` terminal, by randomly right-walk for 6 steps. We take the first step as example:
+
+(1) If the agent choose "up" or "down", and drop the cliff, it might be a "good choice", because it decrease the q-value of this wrong action.
+
+(2) The worst choice is "left", because the agent will touch the "+1" terminal, and make "left" as the best action in state0. So if coin is `False`, the agent always go left for a highest q-value.
+
+(3) If agent choose to go "right", the q-value of (state0, "right") is still 0 because the right block has no reward, and there are 5 step remaining to touch the `+10`.
+
+Therefore, it's highly possible for agent to drop into local optimal, always touch the `+1` and cannot learn the global optimal policy.
+
+Even 5000 iterations cannot learn the optimal policy. With discount factor 0.9 and epsilon 0.5.
+
+## Question 9
+
+Just run the shell command, the autograder will train your agent with 2000 games, and test with 100 games.
+
+If your agent win for more than 70/100 games, you can get this credit.

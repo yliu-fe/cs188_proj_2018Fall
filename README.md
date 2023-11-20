@@ -12,7 +12,7 @@ Course website(2018 Fall): <https://inst.eecs.berkeley.edu/~cs188/fa18/index.htm
 |--------|----|--------|----|
 |1|Search|Done|(No note)|
 |2|Multi-agent Search|Done|`multiagent.md`|
-|3|Reinforcement Learning|5/10|`Reinforcement.md`|
+|3|Reinforcement Learning|Done|`Reinforcement.md`|
 |4|Ghostbusters|0/10||
 |5|Machine Learning|0/4||
 
